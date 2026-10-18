@@ -23,8 +23,8 @@ npm install
 npm run dev            # → http://localhost:3000
 ```
 
-That's it. You should see the hero carousel, twelve works, a working bag,
-and a working checkout.
+That's it. You should see the hero carousel, the 29-work collection, a working
+bag, and a working checkout.
 
 | Command | What it does |
 | --- | --- |
@@ -127,7 +127,7 @@ lib/
   db.ts                       Lazy Neon HTTP client (optional by design)
   cart-server.ts              Cookie-token cart persistence helpers
   store/cart.ts               Zustand cart (persisted to localStorage)
-  cloudinary.ts               URL transform helpers (hero/card/thumb/plate/mounted)
+  cloudinary.ts               URL transform helpers (plate/card/thumb/hero/feature)
   types.ts, utils.ts          Domain types, money formatting, cn()
 
 drizzle/
@@ -218,60 +218,93 @@ transparent interior. Drop a new master into `assets/` and run
 
 ---
 
-## 5. Using your own images
+## 5. The collection & images
 
-All twelve works point at Cloudinary delivery URLs. Swapping them is a
-one-line change per work in `lib/catalog.ts` (or a column update in Neon):
+All 29 works live in Cloudinary (cloud `k5uefucz`) and in Neon. To re-point a
+work, change its `imageUrl` in `lib/catalog.ts` and re-seed, or update the
+`image_url` column in the database:
 
 ```ts
-imageUrl: "https://res.cloudinary.com/<your-cloud>/image/upload/v1712/imt/ochre.jpg",
+imageUrl: "https://res.cloudinary.com/<your-cloud>/image/upload/<public_id>.jpg",
 ```
 
-`lib/cloudinary.ts` injects the right transformation for every surface, so you
-never hand-craft a crop:
+**Pulling URLs from Cloudinary** — with `CLOUDINARY_*` set in `.env`:
+
+```bash
+node scripts/cloudinary-list.mjs
+```
+
+It walks every folder and prints each `public_id`, its dimensions, and a
+ready-to-paste `imageUrl:` line for the catalogue.
+
+`lib/cloudinary.ts` injects the right transformation per surface, so you never
+hand-craft a crop:
 
 | Variant | Transform | Used by |
 | --- | --- | --- |
-| `hero` | `c_fill,ar_3:2,w_2400` | Hero carousel |
-| `card` | `c_fill,ar_4:5,w_1200` | Gallery cards |
-| `thumb` | `c_fill,ar_1:1,w_240` | Bag lines, summaries |
-| `mounted` | `c_pad,ar_4:5,b_rgb:efeae1,w_1800` | Detail page (never crops the work) |
-| `plate` / `feature` | `c_limit,w_2000` / `c_fill,ar_16:9` | Full plate, OG images |
+| `plate` | `c_limit,w_2000` | Hero plate + detail page — **never crops the work** |
+| `card` | `c_fill,ar_3:4,w_1200` | Gallery cards (the studio's 3:4 format) |
+| `thumb` | `c_fill,ar_1:1,w_240` | Bag lines, order summaries |
+| `hero` | `c_fill,ar_3:2,w_2400` | Wide fallback crop |
+| `feature` | `c_fill,ar_16:9,w_1800` | OpenGraph cards |
 
-The demo URLs use Cloudinary's `demo` cloud with `e_art:*` painterly presets so
-placeholder photography reads as artwork. Drop the `e_art:…` segment for your
-own uploads. `next.config.ts` allows `res.cloudinary.com` (and Unsplash) through
-`next/image`; add your host there if you use another CDN.
+Studio photography is composed as a **lit plate against the ink ground** (hero)
+and as a 3:4 plate on paper (cards, detail), so an object on a white ground reads
+as an artwork rather than as a product cut-out. `next.config.ts` allows
+`res.cloudinary.com` through `next/image`; add your host there for another CDN.
 
 ---
 
-## 6. Deploy
+## 6. Payment
+
+Checkout creates the order as `PENDING`, then opens the bank-transfer dialog
+(`components/payment-dialog.tsx`): amount, order reference, bank, account name
+and account number — each copyable — plus a "Notify the registrar" mailto that
+pre-fills the reference. It can be reopened from the confirmation screen.
+
+Bank details are public by nature, so they come from env and are inlined at
+build time:
+
+```bash
+NEXT_PUBLIC_BANK_NAME="Your bank"
+NEXT_PUBLIC_ACCOUNT_NAME="IMT ART MUSEUM LTD"
+NEXT_PUBLIC_ACCOUNT_NUMBER="0123456789"
+```
+
+> The values committed in `.env.example` are placeholders. Set your real ones in
+> `.env` and rebuild (`npm run build`) — `NEXT_PUBLIC_*` is baked in at build.
+
+---
+
+## 7. Deploy
 
 **Vercel**
 
 1. Push the repo and import it in Vercel.
-2. Add `DATABASE_URL` (pooled) — and `DIRECT_URL` if you run migrations in CI.
+2. Add `DATABASE_URL` (pooled) plus the `NEXT_PUBLIC_*` payment variables.
 3. Deploy. Static pages (home, every `/artworks/[slug]`) regenerate hourly via
    `revalidate = 3600`; API routes are dynamic.
 
 **Before real traffic:** add authentication for `/checkout` (or keep it as an
-enquiry flow), wire a payment provider (Stripe Checkout) into
-`POST /api/orders`, and point `/api/newsletter` at your email provider.
+enquiry flow), verify incoming transfers against `orders.number`, and point
+`/api/newsletter` at your email provider.
 
 ---
 
-## 7. Verified in this build
+## 8. Verified in this build
 
 - `npm run typecheck` — clean.
-- `npm run build` — clean production build: 18 pages, all 12 artwork entries
+- `npm run build` — clean production build: 37 routes, all 29 artwork entries
   prerendered via `generateStaticParams`, API routes dynamic.
-- `npm run images:check` — all 48 variants (12 works × 4 surfaces) return `200`.
-- Route smoke test against the production server: `/`, `/artworks/[slug]`,
-  `/checkout`, 404, `/api/health`, `/api/artworks`, `/api/cart`, `/api/orders`,
-  `/api/newsletter` all behave. `POST /api/orders` with a tampered
-  `priceCents: 1` still charged `$42,000` — server-side re-pricing confirmed.
+- `node scripts/check-images.mjs` — all 116 variants (29 works × 4 surfaces) return `200`.
+- `node scripts/apply-schema.mjs` — 5 tables created in Neon; `db:seed` upserted 29 works.
+- DB smoke test: `/api/health` → `connected`, `/api/artworks` → 29,
+  `POST /api/orders` → `persisted: true`, an `orders` row written and stock
+  decremented 1 → 0 (test order and stock then rolled back).
+- Earlier route smoke test: `/`, `/artworks/[slug]`, `/checkout`, 404,
+  `/api/cart`, `/api/newsletter` all behave; a tampered `priceCents` was ignored
+  and the order re-priced server-side.
 
 ---
 
 <p align="center"><strong>Made by ita</strong></p>
-"# IMT-ART-MUSEUM-" 

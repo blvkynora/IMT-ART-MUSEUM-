@@ -237,10 +237,16 @@ the underline to `ink` — no boxes, no shadows, no rounded corners.
 
 ### Imagery
 
-- Cards crop to **4:5** (the standard museum plate ratio).
-- The detail page **never crops**: `mounted` pads the full work onto a warm mat,
-  so landscape and portrait works sit identically.
-- Fine film grain (`.grain`) sits over hero and dark bands at 22% opacity,
+The collection is photographed as objects on a white studio ground, at exactly
+**3:4**. The layout is built around that, not against it:
+
+- **Hero** — the work hangs as a *lit paper plate* on the ink ground, with the
+  wall label beside it. A full-bleed crop with dark veils would wreck a
+  white-ground studio shot; a plate composition makes the object read as art.
+- **Cards** — 3:4, so the work is never cropped. The plate number badge and the
+  4:5-era "mounted mat" were both removed once the source format was known.
+- **Detail** — full plate (`c_limit`), `object-contain`, on `paper`.
+- Fine film grain (`.grain`) sits over the hero and dark bands at low opacity,
   `mix-blend-mode: overlay` — invisible up close, tangible in aggregate.
 
 ---

@@ -43,9 +43,9 @@ export function VisitBand() {
               id="visit-heading"
               className="mt-6 font-display text-[clamp(2.1rem,4.6vw,3.75rem)] leading-[0.98]"
             >
-              Three cities,
+              IMT SCULPTURE GARDEN,
               <br />
-              one collection.
+              Campus 3, Independence layout.
             </h2>
           </div>
 
@@ -64,28 +64,6 @@ export function VisitBand() {
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-10 border-t border-bone/12 pt-10 sm:grid-cols-3 md:gap-8">
-          {LOCATIONS.map((location, index) => (
-            <Reveal key={location.city} delay={index * 0.09}>
-              <div>
-                <p className="label-caps-sm text-navy-soft/85">{location.role}</p>
-                <h3 className="mt-3 font-display text-3xl">{location.city}</h3>
-                <address className="mt-4 text-sm leading-relaxed text-bone/60 not-italic">
-                  {location.address.map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </address>
-                <ul className="mt-4 space-y-1 text-sm text-bone/45">
-                  {location.hours.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );

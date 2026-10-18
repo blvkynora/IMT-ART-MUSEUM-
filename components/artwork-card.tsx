@@ -53,10 +53,10 @@ export function ArtworkCard({
     >
       <Link
         href={`/artworks/${artwork.slug}`}
-        className="relative block overflow-hidden bg-linen"
+        className="relative block overflow-hidden bg-paper"
         aria-label={`${artwork.title} by ${artwork.artist} — view the work`}
       >
-        <div className="relative aspect-4/5 w-full overflow-hidden">
+        <div className="relative aspect-3/4 w-full overflow-hidden">
           <motion.div
             className="absolute inset-0"
             whileHover={reduceMotion ? undefined : { scale: 1.055 }}

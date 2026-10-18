@@ -18,15 +18,14 @@ export default async function HomePage() {
 
   const heroSlides = featured.length > 0 ? featured : artworks.slice(0, 4);
   const feature =
-    artworks.find((artwork) => artwork.slug === "nocturne-atlantic") ?? artworks[0];
+    artworks.find((artwork) => artwork.slug === "assembly") ?? artworks[0];
 
-  const artistCount = new Set(artworks.map((artwork) => artwork.artist)).size;
   const collectionCount = new Set(artworks.map((artwork) => artwork.collection)).size;
 
   const stats = [
     { value: String(artworks.length), label: "Works on view" },
-    { value: String(artistCount), label: "Artists represented" },
     { value: String(collectionCount), label: "Collections" },
+    { value: "3", label: "Cities" },
     { value: "1974", label: "Established" },
   ];
 
@@ -138,7 +137,7 @@ export default async function HomePage() {
           id="collection-heading"
           eyebrow="The collection"
           title="Works available for acquisition"
-          description="Twelve works, four collections, one standard of care. Prices include certified provenance and insured delivery."
+          description={`${artworks.length} works across ${collectionCount} collections. Every piece arrives with certified provenance, a condition report and insured delivery.`}
           action={
             <a
               href="mailto:concierge@imtartmuseum.com"
@@ -170,14 +169,14 @@ export default async function HomePage() {
 
           <Reveal delay={0.1}>
             <blockquote className="mx-auto mt-8 max-w-4xl font-display text-[clamp(1.6rem,3.6vw,2.85rem)] leading-[1.28] text-balance">
-              &ldquo;A painting is not finished when the artist stops. It is
-              finished when someone stands in front of it long enough to
+              &ldquo;A sculpture is not finished when the artist stops. It is
+              finished when someone walks around it slowly enough to
               disagree.&rdquo;
             </blockquote>
           </Reveal>
 
           <Reveal delay={0.18}>
-            <p className="label-caps mt-9 text-stone">Amara Okonkwo · Silent Cartography</p>
+            <p className="label-caps mt-9 text-stone">IMT Studio · on the Civic series</p>
           </Reveal>
         </div>
       </section>

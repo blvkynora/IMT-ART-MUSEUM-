@@ -86,10 +86,10 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
         {/* ── Plate ─────────────────────────────────────────── */}
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal y={28}>
-            <div className="group relative overflow-hidden bg-linen p-4 md:p-8">
-              <div className="relative aspect-4/5 w-full">
+            <div className="group relative overflow-hidden bg-paper p-4 md:p-8">
+              <div className="relative aspect-3/4 w-full">
                 <Image
-                  src={cloud.mounted(artwork.imageUrl)}
+                  src={cloud.plate(artwork.imageUrl)}
                   alt={`${artwork.title}, ${artwork.year} — ${artwork.medium}, ${artwork.dimensions}`}
                   fill
                   priority
@@ -101,7 +101,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
           </Reveal>
 
           <p className="label-caps-sm mt-4 text-center text-stone/70">
-            Shown to scale on a museum mount · full plate available on request
+            Studio plate · full condition report available on request
           </p>
         </div>
 

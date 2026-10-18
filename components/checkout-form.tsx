@@ -10,6 +10,7 @@ import { variants as cloud } from "@/lib/cloudinary";
 import { cartSubtotal, useCart } from "@/lib/store/cart";
 import type { PlacedOrder } from "@/lib/types";
 import { cn, formatPrice, pad } from "@/lib/utils";
+import { PaymentDialog } from "@/components/payment-dialog";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -36,6 +37,8 @@ export function CheckoutForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
   const [order, setOrder] = useState<PlacedOrder | null>(null);
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [placedEmail, setPlacedEmail] = useState("");
 
   const subtotal = useMemo(() => cartSubtotal(lines), [lines]);
   const currency = lines[0]?.currency ?? "USD";
@@ -82,8 +85,11 @@ export function CheckoutForm() {
       }
 
       setOrder(payload.order);
+      setPlacedEmail(value("email"));
       setStatus("done");
       clear();
+      // The work is reserved, not paid — surface the transfer details now.
+      setPaymentOpen(true);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Checkout failed.");
       setStatus("error");
@@ -137,18 +143,36 @@ export function CheckoutForm() {
             </p>
           )}
 
-          <Link
-            href="/#collection"
-            className="label-caps group mt-10 inline-flex items-center gap-2 border-b border-ink/30 pb-2 transition-colors hover:border-ink"
-          >
-            Return to the collection
-            <ArrowRight
-              className="size-3.5 transition-transform duration-500 ease-luxe group-hover:translate-x-1"
-              strokeWidth={1.5}
-              aria-hidden
-            />
-          </Link>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+            <button
+              type="button"
+              onClick={() => setPaymentOpen(true)}
+              className="label-caps group inline-flex items-center gap-2.5 bg-ink px-6 py-3.5 text-bone transition-colors duration-500 hover:bg-graphite"
+            >
+              Payment details
+              <ArrowRight
+                className="size-3.5 transition-transform duration-500 ease-luxe group-hover:translate-x-1"
+                strokeWidth={1.5}
+                aria-hidden
+              />
+            </button>
+            <Link
+              href="/#collection"
+              className="label-caps group inline-flex items-center gap-2 border-b border-ink/30 pb-2 text-ink/70 transition-colors hover:border-ink hover:text-ink"
+            >
+              Return to the collection
+            </Link>
+          </div>
         </motion.div>
+
+        <PaymentDialog
+          open={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          reference={order.number}
+          amountCents={order.totalCents}
+          currency={order.currency}
+          email={placedEmail}
+        />
       </div>
     );
   }
@@ -170,8 +194,8 @@ export function CheckoutForm() {
         <p className="label-caps text-stone">Checkout</p>
         <h1 className="mt-5 font-display text-4xl md:text-5xl">Your bag is empty</h1>
         <p className="mt-4 max-w-md text-sm leading-relaxed text-stone">
-          Nothing has been selected yet. The collection holds twelve works, each
-          available as a single acquisition.
+          Nothing has been selected yet. Every work in the collection is a single
+          acquisition, ready to be placed on reserve.
         </p>
         <Link
           href="/#collection"

@@ -10,7 +10,8 @@ export default defineConfig({
   dialect: "postgresql",
   schema: "./drizzle/schema.ts",
   out: "./drizzle/migrations",
-  strict: true,
+  // Non-interactive: `db:push` must run the same in CI as at a terminal.
+  strict: false,
   verbose: true,
   dbCredentials: {
     url: process.env.DATABASE_URL ?? "",

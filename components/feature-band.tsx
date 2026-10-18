@@ -27,9 +27,9 @@ export function FeatureBand({ artwork }: FeatureBandProps) {
         <Reveal y={36} className="order-2 lg:order-1">
           <Link
             href={`/artworks/${artwork.slug}`}
-            className="group relative block overflow-hidden bg-linen"
+            className="group relative block overflow-hidden bg-paper"
           >
-            <div className="relative aspect-4/5 w-full sm:aspect-5/6">
+            <div className="relative aspect-3/4 w-full">
               <Image
                 src={cloud.card(artwork.imageUrl)}
                 alt={`${artwork.title} by ${artwork.artist}`}

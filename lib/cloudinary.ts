@@ -31,19 +31,12 @@ const QUALITY = "q_auto:best,f_auto";
 export const variants = {
   /** Immersive hero: wide, generous, high resolution. */
   hero: (src: string) => cloudinaryUrl(src, `c_fill,ar_3:2,w_2400,${QUALITY}`),
-  /** Portrait crop used by cards and thumbnails (museum-plate ratio). */
-  card: (src: string) => cloudinaryUrl(src, `c_fill,ar_4:5,w_1200,${QUALITY}`),
+  /** Portrait crop used by cards and thumbnails (studio plate ratio, 3:4). */
+  card: (src: string) => cloudinaryUrl(src, `c_fill,ar_3:4,w_1200,${QUALITY}`),
   /** Small square crop for bag lines and thumbnails. */
   thumb: (src: string) => cloudinaryUrl(src, `c_fill,ar_1:1,w_240,${QUALITY}`),
-  /** Full plate, uncropped — for zoom views and print previews. */
+  /** Full plate, uncropped — used by the hero and the detail view. */
   plate: (src: string) => cloudinaryUrl(src, `c_limit,w_2000,${QUALITY}`),
-  /**
-   * Museum mount: the whole work is padded (never cropped) into a 4:5
-   * plate on a warm mat, so landscape and portrait works sit identically
-   * in the detail view.
-   */
-  mounted: (src: string) =>
-    cloudinaryUrl(src, `c_pad,b_rgb:efeae1,ar_4:5,w_1800,${QUALITY}`),
   /** Editorial landscape crop for feature bands. */
   feature: (src: string) => cloudinaryUrl(src, `c_fill,ar_16:9,w_1800,${QUALITY}`),
 } as const;

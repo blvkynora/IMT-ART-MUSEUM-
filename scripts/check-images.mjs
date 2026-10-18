@@ -1,14 +1,16 @@
-// Throwaway: confirm every derived Cloudinary variant in the catalogue is served.
+// Verify every Cloudinary URL in the catalogue resolves, in all rendered variants.
+//   node scripts/check-images.mjs
 import { readFile } from "node:fs/promises";
 
 const source = await readFile("lib/catalog.ts", "utf8");
-const matches = [...source.matchAll(/img\("([^"]+)",\s*"([^"]+)"\)/g)];
+const ids = [...source.matchAll(/imageUrl:\s*img\("([^"]+)"\)/g)].map((m) => m[1]);
 
-if (matches.length === 0) {
-  console.error("No artwork image URLs found — check lib/catalog.ts");
+if (ids.length === 0) {
+  console.error("No img(...) URLs found in lib/catalog.ts");
   process.exit(1);
 }
 
+const CLOUD = "https://res.cloudinary.com/k5uefucz/image/upload";
 const VARIANTS = {
   card: "c_fill,ar_4:5,w_1200,q_auto:best,f_auto",
   hero: "c_fill,ar_3:2,w_2400,q_auto:best,f_auto",
@@ -16,38 +18,33 @@ const VARIANTS = {
   plate: "c_limit,w_2000,q_auto:best,f_auto",
 };
 
-const build = (publicId, preset, transform) =>
-  `https://res.cloudinary.com/demo/image/upload/${transform}/e_art:${preset}/${publicId}`;
-
 const failures = [];
-const sizes = [];
 
-for (const [, publicId, preset] of matches) {
-  const line = [`${publicId} [${preset}]`];
+for (const id of ids) {
+  const parts = [];
   for (const [name, transform] of Object.entries(VARIANTS)) {
-    const url = build(publicId, preset, transform);
+    const url = `${CLOUD}/${transform}/${id}.jpg`;
     try {
       let res = await fetch(url, { method: "HEAD" });
-      if (!res.ok) res = await fetch(url, { method: "GET" });
+      if (!res.ok) res = await fetch(url);
       const type = res.headers.get("content-type") || "";
-      const len = Number(res.headers.get("content-length") || 0);
       if (!res.ok || !type.startsWith("image/")) {
-        failures.push(`${name}: HTTP ${res.status} ${type} ${url}`);
-        line.push(`${name}=FAIL(${res.status})`);
+        failures.push(`${name}: HTTP ${res.status} (${type}) ${id}`);
+        parts.push(`${name}=FAIL`);
       } else {
-        sizes.push(len);
-        line.push(`${name}=${Math.round(len / 1024)}kB`);
+        parts.push(
+          `${name}=${Math.round(Number(res.headers.get("content-length") || 0) / 1024)}kB`,
+        );
       }
     } catch (err) {
-      failures.push(`${name}: ${err.message} ${url}`);
-      line.push(`${name}=ERR`);
+      failures.push(`${name}: ${err.message} ${id}`);
+      parts.push(`${name}=ERR`);
     }
   }
-  console.log(line.join("  "));
+  console.log(`${id.padEnd(56)} ${parts.join("  ")}`);
 }
 
-console.log(`\nartworks: ${matches.length}  variants checked: ${matches.length * 4}`);
-console.log(`median payload: ${Math.round(sizes.sort((a, b) => a - b)[Math.floor(sizes.length / 2)] / 1024)} kB`);
+console.log(`\nartworks: ${ids.length}  variants checked: ${ids.length * 4}`);
 if (failures.length) {
   console.error(`\nFAILURES (${failures.length}):\n${failures.join("\n")}`);
   process.exit(1);
