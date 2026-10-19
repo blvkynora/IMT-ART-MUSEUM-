@@ -118,7 +118,7 @@ export function ArtworkCard({
 
         <p className="mt-1.5 text-sm text-stone">{artwork.artist}</p>
 
-        <div className="mt-auto flex items-center justify-between gap-3 border-t pt-4 hairline">
+        {/* <div className="mt-auto flex items-center justify-between gap-3 border-t pt-4 hairline">
           <div>
             <p className="sr-only">Price</p>
             <p className="font-display text-xl leading-none tabular-nums">
@@ -127,7 +127,7 @@ export function ArtworkCard({
             <p className="mt-1 text-[0.68rem] text-stone/80">{artwork.medium}</p>
           </div>
           <AddToCartButton artwork={artwork} size="sm" className="shrink-0" />
-        </div>
+        </div> */}
       </div>
     </motion.article>
   );

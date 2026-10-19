@@ -126,7 +126,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
             </p>
           </Reveal>
 
-          <Reveal delay={0.18}>
+          {/* <Reveal delay={0.18}>
             <div className="mt-8 flex flex-wrap items-end justify-between gap-6 border-y py-6 hairline">
               <div>
                 <p className="label-caps-sm text-stone">
@@ -140,9 +140,9 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
                 <p className="label-caps-sm text-stone">{artwork.edition}</p>
               )}
             </div>
-          </Reveal>
+          </Reveal> */}
 
-          <Reveal delay={0.24}>
+          {/* <Reveal delay={0.24}>
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <AddToCartButton
                 artwork={artwork}
@@ -164,7 +164,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
                 />
               </a>
             </div>
-          </Reveal>
+          </Reveal> */}
 
           <Reveal delay={0.3}>
             <p className="mt-9 text-[0.95rem] leading-[1.8] text-slate/85">

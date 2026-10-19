@@ -46,87 +46,6 @@ export default async function HomePage() {
         ]}
       />
 
-      {/* ── Curatorial note ─────────────────────────────────── */}
-      <section
-        id="curatorial"
-        aria-labelledby="curatorial-heading"
-        className="shell scroll-mt-24 py-20 md:py-28"
-      >
-        <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
-          <div>
-            <Reveal y={14}>
-              <p className="label-caps flex items-center gap-3 text-stone">
-                <span className="h-px w-8 bg-navy" />
-                Curatorial note
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <p className="mt-7 max-w-xs text-sm leading-[1.75] text-stone">
-                Founded in 1974 above a bookbinder&rsquo;s workshop in SoHo, IMT
-                has spent five decades placing singular works with collectors
-                who read before they buy.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.18}>
-              <Link
-                href="/#collection"
-                className="label-caps group mt-9 inline-flex items-center gap-2 border-b border-ink/25 pb-2 transition-colors duration-500 hover:border-ink"
-              >
-                Explore the collection
-                <ArrowRight
-                  className="size-3.5 transition-transform duration-500 ease-luxe group-hover:translate-x-1"
-                  strokeWidth={1.5}
-                  aria-hidden
-                />
-              </Link>
-            </Reveal>
-          </div>
-
-          <div>
-            <h2 id="curatorial-heading">
-              <span className="sr-only">Curatorial statement</span>
-              <span className="block font-display text-[clamp(1.6rem,3.1vw,2.65rem)] leading-[1.3] text-ink">
-                <WordReveal text="We do not collect for walls." stagger={0.05} />{" "}
-                <em className="italic text-stone">
-                  <WordReveal
-                    text="We collect for the conversations that happen in front of them."
-                    stagger={0.035}
-                    delay={0.15}
-                  />
-                </em>
-              </span>
-            </h2>
-
-            <Reveal delay={0.2}>
-              <p className="mt-8 max-w-xl text-sm leading-[1.8] text-slate/80">
-                Every work in this catalogue has been seen in person by a member
-                of the curatorial team before it was listed — condition reviewed,
-                provenance verified, and the artist spoken to. What you see here
-                is the residue of that process, not a feed.
-              </p>
-            </Reveal>
-
-            <div className="mt-12">
-              <DrawLine />
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-8 pt-8 sm:grid-cols-4">
-                {stats.map((stat, index) => (
-                  <Reveal key={stat.label} delay={index * 0.07} y={16}>
-                    <div>
-                      <dd className="font-display text-4xl leading-none tabular-nums md:text-5xl">
-                        {stat.value}
-                      </dd>
-                      <dt className="label-caps-sm mt-3 text-stone">{stat.label}</dt>
-                    </div>
-                  </Reveal>
-                ))}
-              </dl>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── Collection ──────────────────────────────────────── */}
       <section
         id="collection"
@@ -137,7 +56,8 @@ export default async function HomePage() {
           id="collection-heading"
           eyebrow="The collection"
           title="Works available for acquisition"
-          description={`${artworks.length} works across ${collectionCount} collections. Every piece arrives with certified provenance, a condition report and insured delivery.`}
+          description=""
+
           action={
             <a
               href="mailto:concierge@imtartmuseum.com"

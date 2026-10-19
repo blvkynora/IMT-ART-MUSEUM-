@@ -209,7 +209,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                   }}
                   className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-9"
                 >
-                  <div>
+                  {/* <div>
                     <p className="label-caps-sm text-bone/35">Available for acquisition</p>
                     <p className="mt-2 font-display text-3xl tabular-nums">
                       {formatPrice(active.priceCents, active.currency)}
@@ -235,6 +235,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                       />
                     </Link>
                   </div>
+                   */}
                 </motion.div>
               </motion.div>
             </AnimatePresence>
