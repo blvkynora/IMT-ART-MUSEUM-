@@ -21,14 +21,14 @@ const ARTIST = "IMT Studio";
 export const catalog: Artwork[] = [
   {
     id: "art_weight_of_kola",
-    slug: "the-weight-of-kola",
-    title: "The Weight of Kola",
+    slug: "the-weight-of-history",
+    title: "The Weight of History",
     artist: ARTIST,
     year: 2025,
     medium: "Bronze and kola nut",
     dimensions: "96 × 34 × 30 cm",
     description:
-      "Kola travels before it is broken: offered, refused, offered again. Cast in a single pour and left unpolished where the hand would rest, the work holds the etiquette of welcome as a physical mass.",
+      "History is what a community agrees to keep carrying. Cast in a single pour and left unpolished where the hand would rest, the form weighs the record rather than the monument built over it.",
     imageUrl: img("weight_of_history_sy_bolism_of_kola"),
     priceCents: 1100000,
     currency: "USD",
@@ -78,8 +78,8 @@ export const catalog: Artwork[] = [
   },
   {
     id: "art_burden_of_many",
-    slug: "the-burden-of-many",
-    title: "The Burden of Many",
+    slug: "the-burden-of-over-population",
+    title: "The Burden of Over Population",
     artist: ARTIST,
     year: 2024,
     medium: "Bronze and found objects",
@@ -173,8 +173,8 @@ export const catalog: Artwork[] = [
   },
   {
     id: "art_culture_cannot_release",
-    slug: "what-culture-i-cannot-release",
-    title: "What Culture I Cannot Release",
+    slug: "the-culture-i-cannot-let-go",
+    title: "The Culture I Cannot Let Go",
     artist: ARTIST,
     year: 2025,
     medium: "Carved iroko wood",
@@ -420,8 +420,8 @@ export const catalog: Artwork[] = [
   },
   {
     id: "art_weight_of_letters",
-    slug: "the-weight-of-letters",
-    title: "The Weight of Letters",
+    slug: "academic-stress",
+    title: "Academic Stress",
     artist: ARTIST,
     year: 2024,
     medium: "Terracotta and slip",
@@ -458,8 +458,8 @@ export const catalog: Artwork[] = [
   },
   {
     id: "art_ransom",
-    slug: "ransom",
-    title: "Ransom",
+    slug: "kidnapping",
+    title: "Kidnapping",
     artist: ARTIST,
     year: 2022,
     medium: "Terracotta and rope",

@@ -23,9 +23,9 @@ const COLUMNS = [
   {
     title: "Contact",
     links: [
-      { label: "concierge@imtartmuseum.com", href: "mailto:concierge@imtartmuseum.com" },
-      { label: "+1 (212) 555 0194", href: "tel:+12125550194" },
-      { label: "Instagram", href: "https://instagram.com" },
+      { label: "artfine227@gmail.com", href: "mailto:artfine227@gmail.com" },
+      { label: "+2347070257113", href: "tel:+2347070257113" },
+      { label: "Instagram", href: "https://instagram.com/afaa_official4" },
     ],
   },
 ] as const;

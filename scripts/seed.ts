@@ -50,8 +50,12 @@ async function main() {
       })),
     )
     .onConflictDoUpdate({
-      target: artworks.slug,
+      // Upsert on the stable id, not the slug: renaming a work changes its
+      // slug, and keying on slug would insert a duplicate row instead of
+      // renaming the existing one.
+      target: artworks.id,
       set: {
+        slug: sql`excluded.slug`,
         title: sql`excluded.title`,
         artist: sql`excluded.artist`,
         year: sql`excluded.year`,
