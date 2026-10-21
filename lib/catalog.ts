@@ -152,6 +152,7 @@ export const catalog: Artwork[] = [
     status: "AVAILABLE",
     collection: "Civic",
   },
+  
   {
     id: "art_two_witnesses",
     slug: "two-witnesses",
